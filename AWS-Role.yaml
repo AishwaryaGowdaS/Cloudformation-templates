@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CloudFormation Template for AWS Integration IAM
+Resources:
+  ScrutRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/SecurityAudit'
+        - 'arn:aws:iam::aws:policy/ReadOnlyAccess'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              AWS: 'arn:aws:iam::123456789:root'
+            Condition:
+              StringEquals:
+                'sts:ExternalId': '123456789'
+      MaxSessionDuration: 43200 
+Outputs:
+  RoleARN:
+    Description: ARN of the role
+    Value: !GetAtt
+      - Role
+      - Arn
